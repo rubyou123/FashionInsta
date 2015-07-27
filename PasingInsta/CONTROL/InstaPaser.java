@@ -1,4 +1,4 @@
-package CONTROL;
+﻿package CONTROL;
 
 
 import java.io.*;
@@ -18,17 +18,21 @@ public class InstaPaser {
 	ArrayList<InstaInfo> instaList = new ArrayList<InstaInfo>();
 	ArrayList<String> searchWordList = new ArrayList<String>();
 	InstaSaver insaver;
-	
-	public void MainPasing(String dbName)
+	int createdTime = -1;
+	public void MainPasing(String dbName, int year, String season)
 	{
 		searchWordList.add("놈코어룩");
-//		searchWordList.add("시스루");
 		insaver = new InstaSaver(dbName);
 		StopWordRemover stwdremv = new StopWordRemover(dbName);
+		KeyWordDBfinder dbFinder = new KeyWordDBfinder(dbName);
 		try
 		{
 			for(String key : searchWordList)
 			{
+				createdTime = dbFinder.getCreatedTime(year, season, key);
+				if(createdTime == -1)
+					insaver.createTable(key);
+				
 				getInstaInformation(key);
 				insaver.saveInsta(instaList, key);
 				stwdremv.removeStopWord(key);
@@ -97,9 +101,18 @@ public class InstaPaser {
 				while (datas_iterator.hasNext()) {
 					InstaInfo instainfo = new InstaInfo();
 					List<String> tempTags = new ArrayList<String>();
-					boardCount++;
+					
 					JSONObject index = datas_iterator.next();
 
+					// 작성날짜가져오기
+					// String으로 가져와서 Int로 저장u
+					String stringTime = (String) index.get("created_time");
+					instainfo.setCreateTime(Integer.parseInt(stringTime));
+					
+					if(instainfo.getCreateTime() <= createdTime)
+						continue;
+					
+					
 					// 태그 가져오기
 					// 태그의 갯수만큼 for문 동작
 					JSONArray tags = (JSONArray) index.get("tags"); // 한개의 글 안에 속한 태그들을 다 들고옴
@@ -112,11 +125,6 @@ public class InstaPaser {
 					// 게시글 고유번호 가져오기
 					String postID = (String) index.get("id");
 					instainfo.setPostID(postID);
-					
-					// 작성날짜가져오기
-					// String으로 가져와서 Int로 저장u
-					String stringTime = (String) index.get("created_time");
-					instainfo.setCreateTime(Integer.parseInt(stringTime));
 					
 					//null 확인해주기 
 					// 본문 내용 가져오기
@@ -151,7 +159,7 @@ public class InstaPaser {
 					JSONObject user = (JSONObject) index.get("user");
 					instainfo.setStringID((String) user.get("username"));
 					instainfo.setNumberID((String) user.get("id"));
-
+					boardCount++;
 					//print
 					instaList.add(instainfo);
 

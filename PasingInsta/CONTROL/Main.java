@@ -6,6 +6,6 @@ public class Main {
 	{
 		InstaPaser inpaser = new InstaPaser();
 		
-		inpaser.MainPasing("instagram");
+		inpaser.MainPasing("instagram", 2015,"s/s");
 	}
 }

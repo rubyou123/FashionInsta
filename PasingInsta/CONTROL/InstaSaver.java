@@ -22,6 +22,14 @@ public class InstaSaver {
 		instaDB = new InstaInfoDB(dbName);
 	}
 	
+	//table을 만듬
+	public void createTable(String tableName)
+	{
+		instaDB.createBoardTable(tableName);
+		instaDB.createBoardTagTable(tableName);
+		instaDB.createTagTable(tableName);
+	}
+	//tagList함수에 저장.
 	public void insertTagList(InstaInfo insta)
 	{
 		List<String> tags = insta.getTags();
@@ -51,20 +59,13 @@ public class InstaSaver {
 			}
 		}
 	}
-	public void createTable(String tableName)
-	{
-		instaDB.createBoardTable(tableName);
-		instaDB.createBoardTagTable(tableName);
-		instaDB.createTagTable(tableName);
-	}
-	
+
+	//insta 정보를 저장
 	public void saveInsta(ArrayList<InstaInfo> instaList, String tableName)
 	{
 		InstaInfo insta;
 		int count = -1;
 		String postID = "";
-		
-		createTable(tableName);
 		
 		for(int i=0; i<instaList.size() ;i++)
 		{
@@ -89,7 +90,7 @@ public class InstaSaver {
 		writeTags(tableName);
 		TagList.clear();
 	}
-	
+	//tag를 .csv파일 저장.
 	public void writeTags(String tableName)
 	{
 		String fileName = tableName + ".csv";

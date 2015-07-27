@@ -1,4 +1,4 @@
-package DATA;
+﻿package DATA;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -163,6 +163,58 @@ public class InstaInfoDB {
 			System.out.println("SQLException: " + sqex.getMessage());
 			System.out.println("SQLState: " + sqex.getSQLState());
 		}
+	}
+public boolean checkKeyWord(int year, String season, String keyWord)
+	{
+		boolean check = true;
+		try {
+			String sql = "select * from keyword where year = '" + year + "' and season = '" 
+		+ season + "' and keyword = '" + keyWord +"'";
+			rs = st.executeQuery(sql);
+			if(rs.next())
+			{
+				check = true;
+			}
+			else
+			{
+				check = false;
+			}
+				
+		} catch (SQLException sqex) {
+			// TODO Auto-generated catch block
+			System.out.println("SQLException: " + sqex.getMessage());
+			System.out.println("SQLState: " + sqex.getSQLState());
+		}
+		return check;
+	}
+	
+	public void insertKeyWord(int year, String season, String keyWord)
+	{
+		try {
+			String sql = "insert into keyword values('" + year + "','" + season + "','" + keyWord + "')";
+			st.executeUpdate(sql);
+		} catch (SQLException sqex) {
+			System.out.println("SQLException: " + sqex.getMessage());
+			System.out.println("SQLState: " + sqex.getSQLState());
+		}
+	}
+	public int searchEarlyCreatedTime(String tableName)
+	{
+		int createdTime = -1;
+		try {
+			String sql = "select max(createdTime) from "+ tableName +"board";
+			rs = st.executeQuery(sql);
+			
+			while(rs.next())
+			{
+				createdTime = rs.getInt(1);
+			}
+		} catch (Exception e) {
+	//		System.out.println("SQLException: " + sqex.getMessage());
+	//		System.out.println("SQLState: " + sqex.getSQLState());
+			e.getStackTrace();
+		}
+		return createdTime;
 	}
 	
 }
