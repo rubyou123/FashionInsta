@@ -1,49 +1,50 @@
 package fieldeducation.fashioninsta;
 
+import android.app.TabActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
-import android.widget.TextView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends TabActivity {
 
-    String key;
+    String item;
     //   TextView textview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        key = getIntent().getStringExtra("key");
-        //    textview =  (TextView)findViewById(R.id.keyText);
-        //   textview.setText(key);
-        TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
-        TextView tabView1 = (TextView) findViewById(R.id.editText);
-        tabView1.setText(key);
-        tabView1.setEnabled(false);
-        TextView tabView2 = (TextView) findViewById(R.id.editText2);
-        tabView2.setText(key);
-        tabView2.setEnabled(false);
-        TextView tabView3 = (TextView) findViewById(R.id.editText3);
-        tabView3.setText(key);
-        tabView3.setEnabled(false);
+        item = getIntent().getStringExtra("item");
 
-        tabHost.setup();
-        TabHost.TabSpec tab1 = tabHost.newTabSpec("ÀÌ¹ÌÁö");
-        TabHost.TabSpec tab2 = tabHost.newTabSpec("¿¬°ü´Ü¾î");
-        TabHost.TabSpec tab3 = tabHost.newTabSpec("»ç¿ëÀÚÃßÃµ");
-        tab1.setIndicator("ÀÌ¹ÌÁö");
-        tab1.setContent(R.id.tab1);
-        tab2.setIndicator("¿¬°ü´Ü¾î");
-        tab2.setContent(R.id.tab2);
-        tab3.setIndicator("»ç¿ëÀÚÃßÃµ");
-        tab3.setContent(R.id.tab3);
+        TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
+
+        TabHost.TabSpec tab1 = tabHost.newTabSpec("Tab1").setIndicator("ì´ë¯¸ì§€");
+        tab1.setContent(new Intent(this, ImageActivity.class));
+        TabHost.TabSpec tab2 = tabHost.newTabSpec("Tab2").setIndicator("ì—°ê´€ ë‹¨ì–´");
+        tab2.setContent(new Intent(this, AssociateTerm.class));
+        TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab3").setIndicator("ì‚¬ìš©ì ì¶”ì²œ");
+        tab3.setContent(new Intent(this, RecommendUserActivity.class));
         tabHost.addTab(tab1);
         tabHost.addTab(tab2);
         tabHost.addTab(tab3);
-        tabHost.setCurrentTab(0);
+
+      /*  tabHost.setup();
+        TabHost.TabSpec tab2 = tabHost.newTabSpec("Tab2");
+        TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab3");
+        tab2.setIndicator("ì—°ê´€ë‹¨ì–´");
+        tab2.setContent(R.string.tab2);
+        tab3.setIndicator("ì‚¬ìš©ìì¶”ì²œ");
+        tab3.setContent(R.string.tab3);
+
+
+        tabHost.getTabWidget().getChildAt(0).getLayoutParams().height = 80;
+        tabHost.getTabWidget().getChildAt(1).getLayoutParams().height = 80;
+        tabHost.getTabWidget().getChildAt(2).getLayoutParams().height = 80;
+
+
+        tabHost.setCurrentTab(0);*/
     }
 
     @Override
