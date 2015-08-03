@@ -29,7 +29,7 @@ public class MainActivity extends TabActivity {
         tabHost.addTab(tab1);
         tabHost.addTab(tab2);
         tabHost.addTab(tab3);
-
+        tabHost.setCurrentTab(0);
       /*  tabHost.setup();
         TabHost.TabSpec tab2 = tabHost.newTabSpec("Tab2");
         TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab3");
@@ -44,7 +44,7 @@ public class MainActivity extends TabActivity {
         tabHost.getTabWidget().getChildAt(2).getLayoutParams().height = 80;
 
 
-        tabHost.setCurrentTab(0);*/
+        */
     }
 
     @Override
