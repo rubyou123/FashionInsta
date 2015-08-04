@@ -11,10 +11,10 @@ public class KeyWordDBfinder {
 		instaDB = new InstaInfoDB(dbName);
 	}
 	
-	public int getCreatedTime(int year, String season, String keyWord, int check)
+	public int getCreatedTime(int year, String season, String keyWord, int idKeyword)
 	{
 		int createdTime = -1;
-		createdTime =  instaDB.searchEarlyCreatedTime(keyWord, check);
+		createdTime =  instaDB.searchEarlyCreatedTime(idKeyword);
 		if(createdTime == -1)
 		{
 		//	instaDB.insertKeyWord(year, season, keyWord);

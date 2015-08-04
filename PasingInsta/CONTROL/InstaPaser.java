@@ -22,12 +22,14 @@ public class InstaPaser {
 	int idkeyword = -1;
 	public void MainPasing(String dbName, int year, String season)
 	{
-//		searchWordList.add("놈코어룩");
+		searchWordList.add("놈코어룩");
 		searchWordList.add("시스루룩");
 		searchWordList.add("어슬레져룩");
+		
 		insaver = new InstaSaver(dbName);
 		StopWordRemover stwdremv = new StopWordRemover(dbName);
 		KeyWordDBfinder dbFinder = new KeyWordDBfinder(dbName);
+		
 		try
 		{
 			for(String key : searchWordList)

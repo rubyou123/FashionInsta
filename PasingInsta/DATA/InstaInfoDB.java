@@ -51,7 +51,7 @@ public class InstaInfoDB {
 			sqex.getStackTrace();
 
 		}
-		System.out.println("checkTagCount idkeyword : " + idkeyword + " , " + check );
+	//	System.out.println("[checkTagCount] idkeyword : " + idkeyword + " count : " + check +" tag : " +tag);
 		return check;
 	}
 
@@ -112,10 +112,11 @@ public class InstaInfoDB {
 			String sql = "insert into tag values('" + tag + "','" + count + "','" + idkeyword  + "')";
 			
 			st.executeUpdate(sql);
-		} catch (Exception sqex) {
+		} catch (Exception e) {
 		//	System.out.println("SQLException: " + sqex.getMessage());
 		//	System.out.println("SQLState: " + sqex.getSQLState());
-			sqex.getStackTrace();
+			e.getStackTrace();
+			
 		}
 	}
 
@@ -188,13 +189,13 @@ public class InstaInfoDB {
 			{
 				id = rs.getInt("idkeyword");
 			}
-
 				
 		} catch (SQLException sqex) {
 			// TODO Auto-generated catch block
 			System.out.println("SQLException: " + sqex.getMessage());
 			System.out.println("SQLState: " + sqex.getSQLState());
 		}
+		System.out.println("[checkKeyWord] keyWord : " + keyWord + " idkeyWord : " + id);
 		return id;
 	}
 	
@@ -208,13 +209,13 @@ public class InstaInfoDB {
 			System.out.println("SQLState: " + sqex.getSQLState());
 		}
 	}
-	public int searchEarlyCreatedTime(String tableName, int id)
+	public int searchEarlyCreatedTime(int idkeyWord)
 	{
 		int createdTime = -1;
 		
 		try {
 			
-			String sql = "select max(createdTime) from board where keyword_idkeyword = '" + id +"'";
+			String sql = "select max(createdTime) from board where keyword_idkeyword = '" + idkeyWord +"'";
 			rs = st.executeQuery(sql);
 			
 			while(rs.next())
@@ -225,6 +226,8 @@ public class InstaInfoDB {
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
+		System.out.println("[searchEarlyCreatedTime] createdTime : " + createdTime + " idkeyWord : " + idkeyWord);
 		return createdTime;
+		
 	}
 }

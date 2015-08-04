@@ -85,10 +85,12 @@ public class InstaSaver {
 			count = TagList.get(tag);
 			tagCount = instaDB.checkTagCount(idkeyword, tag);
 			
-			System.out.println("tagCount : " + tagCount + " ,  " + tag);
+	//		System.out.println("[saveInsta] tag : " + tag +" count : " + count + " tagCount : " + tagCount);
 			
 			if(tagCount == -1)
+			{
 				instaDB.insertTag(tag, count, idkeyword);
+			}
 			else
 			{
 				count += tagCount;
