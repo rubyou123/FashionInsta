@@ -19,22 +19,28 @@ public class InstaPaser {
 	ArrayList<String> searchWordList = new ArrayList<String>();
 	InstaSaver insaver;
 	int createdTime = -1;
+	int idkeyword = -1;
 	public void MainPasing(String dbName, int year, String season)
 	{
 		searchWordList.add("놈코어룩");
+		searchWordList.add("시스루룩");
+		searchWordList.add("어슬레져룩");
+		
 		insaver = new InstaSaver(dbName);
 		StopWordRemover stwdremv = new StopWordRemover(dbName);
 		KeyWordDBfinder dbFinder = new KeyWordDBfinder(dbName);
+		
 		try
 		{
 			for(String key : searchWordList)
 			{
-				createdTime = dbFinder.getCreatedTime(year, season, key);
-				if(createdTime == -1)
-					insaver.createTable(key);
+				idkeyword = dbFinder.getIDKeyword(year, season, key);
+				createdTime = dbFinder.getCreatedTime(year, season, key, idkeyword);
+				
+				System.out.println(key + " : " + idkeyword + " , " + createdTime);
 				
 				getInstaInformation(key);
-				insaver.saveInsta(instaList, key);
+				insaver.saveInsta(instaList, key, idkeyword);
 				stwdremv.removeStopWord(key);
 				
 				instaList.clear();

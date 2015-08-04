@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">FashionInsta</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">loginActivity</string>
+    <string name="title_activity_keyword_view">KeywordView</string>
+    <string name="title_activity_image">ImageActivity</string>
+    <string name="title_activity_associate_term">AssociateTerm</string>
+    <string name="title_activity_recomend_user">RecomendUser</string>
+    <string name="title_activity_recommend_user">RecommendUserActivity</string>
+    <string name="tab1">이미지</string>
+    <string name="tab2">연관단어</string>
+    <string name="tab3">사용자추천</string>
+</resources>

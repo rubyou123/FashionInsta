@@ -1,4 +1,4 @@
-package CONTROL;
+﻿package CONTROL;
 
 import DATA.InstaInfoDB;
 
@@ -11,23 +11,37 @@ public class KeyWordDBfinder {
 		instaDB = new InstaInfoDB(dbName);
 	}
 	
-	public int getCreatedTime(int year, String season, String keyWord)
+	public int getCreatedTime(int year, String season, String keyWord, int idKeyword)
 	{
-		boolean check = true;
-	    check = instaDB.checkKeyWord(year, season, keyWord);
-		if(check == false)
+		int createdTime = -1;
+		createdTime =  instaDB.searchEarlyCreatedTime(idKeyword);
+		if(createdTime == -1)
 		{
-			instaDB.insertKeyWord(year, season, keyWord);
+		//	instaDB.insertKeyWord(year, season, keyWord);
 			System.out.println("======== 최근 마지막 게시글 : 없음 ");
-			return -1;
 		}
 		else
 		{
-			int createdTime =  instaDB.searchEarlyCreatedTime(keyWord);
+		//	createdTime =  instaDB.searchEarlyCreatedTime(keyWord, check);
 			System.out.println("======== 최근 마지막 게시글 : " + createdTime);
-			return createdTime;
+
 		}
+		return createdTime;
 	}
+	
+	public int getIDKeyword(int year, String season, String keyword)
+	{
+		int check = instaDB.checkKeyWord(year, season, keyword);
+		
+		if(check == -1)
+		{
+			instaDB.insertKeyWord(year, season, keyword);
+			check = instaDB.checkKeyWord(year, season, keyword);
+		}
+		
+		return check;
+	}
+	
 	
 	public void closeDB()
 	{
