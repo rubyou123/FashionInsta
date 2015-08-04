@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="C:/Users/theimc_bigdata/Desktop/전석종/원앙/jar모음/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/theimc_bigdata/Desktop/전석종/원앙/jar모음/jsoup-1.8.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/theimc_bigdata/Desktop/전석종/원앙/jar모음/mysql-connector-java-3.0.17-ga/mysql-connector-java-3.0.17-ga/mysql-connector-java-3.0.17-ga-bin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

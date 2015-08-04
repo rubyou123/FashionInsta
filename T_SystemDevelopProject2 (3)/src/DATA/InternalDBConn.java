@@ -1,0 +1,54 @@
+package DATA;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class InternalDBConn {
+	static {
+		try {
+			String driverName = "com.mysql.jdbc.Driver";
+			Class.forName(driverName);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Connection getConnection() throws SQLException {
+		String url = "jdbc:mysql://localhost:3306/nomcore2?useUnicode=true&characterEncoding=utf8";
+		String id = "root";
+		String password = "tjr153";
+		Connection conn = DriverManager.getConnection(url, id, password);
+		return conn;
+	}
+
+	public static void close(java.sql.Statement stmt, Connection conn) {
+		if (stmt != null) {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void close(ResultSet rs, java.sql.Statement stmt, Connection conn) {
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		close(stmt, conn);
+	}
+}
