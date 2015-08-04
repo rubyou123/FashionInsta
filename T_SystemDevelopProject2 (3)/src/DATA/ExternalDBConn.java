@@ -16,8 +16,8 @@ public class ExternalDBConn {
 	}
 
 	public static Connection getConnection() throws SQLException {
-		String url = "jdbc:mysql://192.168.123.126/nomcore";
-		String id = "person";
+		String url = "jdbc:mysql://127.0.0.1/instagram";
+		String id = "root";
 		String password = "apmsetup";
 		Connection conn = DriverManager.getConnection(url, id, password);
 		return conn;
@@ -50,4 +50,5 @@ public class ExternalDBConn {
 		}
 		close(stmt, conn);
 	}
+	
 }

@@ -34,49 +34,49 @@ public class ParsingCategoryOfNaverShoping {
 			
 			for(int i=0; i< splitCategory.length; i++){
 				
-				if(splitCategory[i].indexOf("ÆÐ¼ÇÀâÈ­") != -1){
+				if(splitCategory[i].indexOf("íŒ¨ì…˜ìž¡í™”") != -1){
 					//System.out.println(splitCategory[i].substring(4));
 					hashTagOfBoard.setCategoryList(splitCategory[i].substring(4), 0);
 				}
-				else if(splitCategory[i].indexOf("½ºÆ÷Ã÷/·¹Àú") != -1){
+				else if(splitCategory[i].indexOf("ìŠ¤í¬ì¸ /ë ˆì €") != -1){
 					//System.out.println(splitCategory[i].substring(6));
 					hashTagOfBoard.setCategoryList(splitCategory[i].substring(6), 1);
 				}	
-				else if(splitCategory[i].indexOf("µðÁöÅÐ/°¡Àü") != -1){
+				else if(splitCategory[i].indexOf("ë””ì§€í„¸/ê°€ì „") != -1){
 					//System.out.println(splitCategory[i].substring(6));
 					hashTagOfBoard.setCategoryList(splitCategory[i].substring(6), 2);
 				}					
-				else if(splitCategory[i].indexOf("Ãâ»ê/À°¾Æ") != -1){
+				else if(splitCategory[i].indexOf("ì¶œì‚°/ìœ¡ì•„") != -1){
 					//System.out.println(splitCategory[i].substring(5));
 					hashTagOfBoard.setCategoryList(splitCategory[i].substring(5), 3);
 				}
-				else if(splitCategory[i].indexOf("¿©Çà/¹®È­") != -1){
+				else if(splitCategory[i].indexOf("ì—¬í–‰/ë¬¸í™”") != -1){
 					//System.out.println(splitCategory[i].substring(5));
 					hashTagOfBoard.setCategoryList(splitCategory[i].substring(5), 4);
 				}
-				else if(splitCategory[i].indexOf("ÆÐ¼ÇÀÇ·ù") != -1){
+				else if(splitCategory[i].indexOf("íŒ¨ì…˜ì˜ë¥˜") != -1){
 					//System.out.println(splitCategory[i].substring(4));
 					hashTagOfBoard.setCategoryList(splitCategory[i].substring(4), 5);
 				}
-				else if(splitCategory[i].indexOf("°¡±¸/ÀÎÅ×¸®¾î") != -1){
+				else if(splitCategory[i].indexOf("ê°€êµ¬/ì¸í…Œë¦¬ì–´") != -1){
 					//System.out.println(splitCategory[i].substring(7));
 					hashTagOfBoard.setCategoryList(splitCategory[i].substring(7), 6);
 				}
-				else if(splitCategory[i].indexOf("È­ÀåÇ°/¹Ì¿ë") != -1){
+				else if(splitCategory[i].indexOf("í™”ìž¥í’ˆ/ë¯¸ìš©") != -1){
 					//System.out.println(splitCategory[i].substring(6));
 					hashTagOfBoard.setCategoryList(splitCategory[i].substring(6), 7);
 				}
-				else if(splitCategory[i].indexOf("»ýÈ°/°Ç°­") != -1){
+				else if(splitCategory[i].indexOf("ìƒí™œ/ê±´ê°•") != -1){
 					//System.out.println(splitCategory[i].substring(5));
 					hashTagOfBoard.setCategoryList(splitCategory[i].substring(5), 8);
 				}
-				else if((splitCategory[i].indexOf("½ÄÇ°") != -1)){
+				else if((splitCategory[i].indexOf("ì‹í’ˆ") != -1)){
 					if((47<splitCategory[i].charAt(2)) && (splitCategory[i].charAt(2)<58)){
 						//System.out.println(splitCategory[i].substring(2));
 						hashTagOfBoard.setCategoryList(splitCategory[i].substring(2), 9);
 					}
 				}
-				else if(splitCategory[i].indexOf("¸é¼¼Á¡") != -1){
+				else if(splitCategory[i].indexOf("ë©´ì„¸ì ") != -1){
 					//System.out.println(splitCategory[i].substring(3));
 					hashTagOfBoard.setCategoryList(splitCategory[i].substring(3), 10);
 				}
@@ -104,7 +104,7 @@ public class ParsingCategoryOfNaverShoping {
 	}
 	
 	
-	public void setNormalization(Word b){ //¹éºÐÀ§ ÀÛ¾÷
+	public void setNormalization(Word b){ //ë°±ë¶„ìœ„ ìž‘ì—…
 		
 		int sum = 0;
 		double boardNomalization = 0;
@@ -119,7 +119,8 @@ public class ParsingCategoryOfNaverShoping {
 		for(int j = 0; j<11; j++)
 		{
 			if(!b.getCategoryList()[j].equals("0")){
-				boardNomalization = Integer.parseInt(b.getCategoryList()[j])/(double)sum;
+			//	boardNomalization = Integer.parseInt(b.getCategoryList()[j])/(double)sum;
+				boardNomalization = Double.valueOf(b.getCategoryList()[j])/(double)sum;
 				String str  = String.format("%.4f", boardNomalization);
 				b.setCategoryList(str, j);
 			}

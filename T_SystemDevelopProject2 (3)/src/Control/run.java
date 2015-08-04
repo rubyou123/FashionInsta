@@ -26,16 +26,16 @@ public class run {
 	public static void main(String args[]) {
 		
 		ExternalDB edb = new ExternalDB();
-		wordList = edb.getWordList(); // 전체 단어에 대한 빈도수를 가진 총단어 
+		wordList = edb.getWordList(3); // 전체 단어에 대한 빈도수를 가진 총단어  1. 놈코어 2. 시스루룩  3.어슬레져룩
 		
 		setCategoryList(); //카테고리정보가져옴
-		setKeywordList(); //패션 키워드 정보
+		setKeywordList("어슬레져룩"); //패션 키워드 정보
 		
 		postIDList = edb.getPostIdList();
 		
 		setFashionPost();
 		
-		edb.InsertFashionPost(fashionPostList);
+		edb.InsertFashionPost(fashionPostList, 3);
 		
 	}
 	
@@ -71,7 +71,7 @@ public class run {
 		
 	}
 	
-	public static void setKeywordList(){
+	public static void setKeywordList(String key){
 		int size = 0;
 		
 		Set<Entry<String, Integer>> set = wordList.entrySet();
@@ -86,7 +86,7 @@ public class run {
 		totalFre = size;
 		int index = 0;
 		for(int i=0; i<boardList.size(); i++){
-			if(boardList.get(i).getWord().equals("놈코어룩")){
+			if(boardList.get(i).getWord().equals(key)){
 				index = i;
 				break;
 			}
