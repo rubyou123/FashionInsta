@@ -13,11 +13,13 @@ import android.widget.ViewFlipper;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 
 public class ImageActivity extends Activity {
 
     Bitmap bitmapSample1 = null;
+    ArrayList<ImageView> imageList = new ArrayList<ImageView>();
     ImageView  imgSample1 = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
