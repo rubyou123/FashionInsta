@@ -82,7 +82,7 @@ public class InstaInfoDB {
 		try {
 			String sql = "insert into board values('" + info.getPostID() + "','" +  info.getStringID() + "','" + info.getNumberID()
 					+ "','" + info.getImagesURL() + "','" + info.getCreateTime() + "','"
-					+ info.getContent() + "','" + info.getLikeCount() + "','" + info.getReplyCount() + "','" + idkeyword + "')";
+					+ info.getContent() + "','" + info.getLikeCount() + "','" + info.getReplyCount() + "','" + idkeyword + "','" + 0 + "')";
 			
 			st.executeUpdate(sql);
 		} catch (Exception sqex) {
