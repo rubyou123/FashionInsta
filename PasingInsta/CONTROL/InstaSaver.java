@@ -22,13 +22,6 @@ public class InstaSaver {
 		instaDB = new InstaInfoDB(dbName);
 	}
 	
-	//table을 만듬
-	public void createTable(String tableName)
-	{
-		instaDB.createBoardTable(tableName);
-		instaDB.createBoardTagTable(tableName);
-		instaDB.createTagTable(tableName);
-	}
 	//tagList함수에 저장.
 	public void insertTagList(InstaInfo insta)
 	{
@@ -61,33 +54,48 @@ public class InstaSaver {
 	}
 
 	//insta 정보를 저장
-	public void saveInsta(ArrayList<InstaInfo> instaList, String tableName)
+	public void saveInsta(ArrayList<InstaInfo> instaList, String tableName, int idkeyword)
 	{
 		InstaInfo insta;
 		int count = -1;
 		String postID = "";
-		
+		int tagCount = -1;
 		for(int i=0; i<instaList.size() ;i++)
 		{
 			insta = instaList.get(i);
 			postID = insta.getPostID();
-			insertTagList(insta);
 			
-			instaDB.insertBoard(tableName, insta);
+			if(instaDB.checkBoard(idkeyword, postID) == -1)
+				instaDB.insertBoard(insta, idkeyword);
+			else
+				continue;
+			
+			insertTagList(insta);
 			
 			for(String tag : BoardTagList.keySet())
 			{
 				count = BoardTagList.get(tag);
-				instaDB.insertBoardTag(tableName, postID,tag, count);
+				instaDB.insertBoardTag(postID, tag, count);
 			}
 			BoardTagList.clear();	
 		}
+		
 		for(String tag : TagList.keySet())
 		{
 			count = TagList.get(tag);
-			instaDB.insertTag(tableName, tag, count);
+			tagCount = instaDB.checkTagCount(idkeyword, tag);
+			
+			System.out.println("tagCount : " + tagCount + " ,  " + tag);
+			
+			if(tagCount == -1)
+				instaDB.insertTag(tag, count, idkeyword);
+			else
+			{
+				count += tagCount;
+				instaDB.updateTag(tag, count, idkeyword);
+			}
 		}
-		writeTags(tableName);
+	//	writeTags(tableName);
 		TagList.clear();
 	}
 	//tag를 .csv파일 저장.
