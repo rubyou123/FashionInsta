@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class KeywordView extends Activity{
     String result = null;
     StringBuilder sb = null;
     InputStream is = null;
+    Button btn = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +63,8 @@ public class KeywordView extends Activity{
         ListView list = (ListView)findViewById(R.id.listView);
         list.setAdapter(Adapter);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        btn = (Button)findViewById(R.id.button);
+        /*list.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -71,6 +74,26 @@ public class KeywordView extends Activity{
                 Adapter.notifyDataSetChanged();
             }
 
+        });*/
+        //list 아이템 누를시 리스트 아이템 추가, -> 수정시 DB 연동해서 데이터를 가져오면 add 하는 것으로 수정
+
+        btn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                midList.add("놈코어룩");
+                midList.add("어슬레져룩");
+                midList.add("시스루룩");
+                Adapter.notifyDataSetChanged();
+            }
+        });
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent main = new Intent(KeywordView.this, MainActivity.class);
+                main.putExtra("item", midList.get(position));
+                startActivity(main);
+            }
         });
     }
 
