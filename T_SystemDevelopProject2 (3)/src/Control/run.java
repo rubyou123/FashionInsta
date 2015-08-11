@@ -14,28 +14,41 @@ import java.util.concurrent.Executors;
 //java.net.sockettimeoutexception read timed out �빐寃고븷寃�
 public class run {
 	
-	static HashMap<String,Integer> wordList = new HashMap<String,Integer>(); //전체단어 
-	static HashMap<String,Double> keyWordList = new HashMap<String,Double>(); // 패션 키워드에 대한 정보만 가져온다
-	static HashMap<String,String> postIDList = new HashMap<String,String>(); // 한 게시글에 대한 포스트와 해시테그 저장
-	static HashMap<String,Double> fashionPostList = new HashMap<String,Double>(); // 한 게시글에 대한 포스트와 가중치 저장
-	static ArrayList<Word> boardList = new ArrayList<Word>();
-	static ParsingCategoryOfNaverShoping parsingCategory = new ParsingCategoryOfNaverShoping();
-	private static String url;
-	private static int totalFre;
-	
+	static HashMap<String,Integer> wordList;
+	static HashMap<String,Double> keyWordList;
+	static HashMap<String,Double> fashionPostList;
+	static  HashMap<String,String> postIDList;
+	static  ArrayList<Word> boardList;
+	static  ParsingCategoryOfNaverShoping parsingCategory;
+	static String url;
+	static int totalFre;
 	public static void main(String args[]) {
+		//String arr[] = {"놈코어룩","시스루룩"};
+
+	//	for(int i=0; i<3; i++)
+	//	{
+		
+		wordList = new HashMap<String,Integer>(); //전체단어 
+		 keyWordList = new HashMap<String,Double>(); // 패션 키워드에 대한 정보만 가져온다
+		 postIDList = new HashMap<String,String>(); // 한 게시글에 대한 포스트와 해시테그 저장
+		  fashionPostList = new HashMap<String,Double>(); // 한 게시글에 대한 포스트와 가중치 저장
+		 boardList = new ArrayList<Word>();
+		 parsingCategory = new ParsingCategoryOfNaverShoping();
+		  url = "";
+		  totalFre = 0;
 		
 		ExternalDB edb = new ExternalDB();
-		wordList = edb.getWordList(3); // 전체 단어에 대한 빈도수를 가진 총단어  1. 놈코어 2. 시스루룩  3.어슬레져룩
+		wordList = edb.getWordList(1); // 전체 단어에 대한 빈도수를 가진 총단어  1. 놈코어 2. 시스루룩  3.어슬레져룩
 		
 		setCategoryList(); //카테고리정보가져옴
-		setKeywordList("어슬레져룩"); //패션 키워드 정보
+		setKeywordList("놈코어룩"); //패션 키워드 정보
 		
 		postIDList = edb.getPostIdList();
 		
 		setFashionPost();
 		
-		edb.InsertFashionPost(fashionPostList, 3);
+		edb.InsertFashionPost(fashionPostList, 1);
+	//	}
 		
 	}
 	

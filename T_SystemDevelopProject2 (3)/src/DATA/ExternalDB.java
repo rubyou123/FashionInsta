@@ -121,6 +121,7 @@ public class ExternalDB {
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
+		
 		System.out.println("총 tag 수 : " + tagcount);
 		System.out.println("External DB(word2test) Conn, Exit");
 		ExternalDBConn.close(rs, stmt, con);
