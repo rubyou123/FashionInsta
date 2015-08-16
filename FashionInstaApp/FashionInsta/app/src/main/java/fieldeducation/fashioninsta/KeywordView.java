@@ -12,46 +12,56 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.json.JSONObject;
 import org.json.JSONArray;
-
 import org.json.JSONException;
-
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
+public class KeywordView extends Activity {
 
-public class KeywordView extends Activity implements AdapterView.OnItemClickListener{
-
-    public String[] wordList = new String[7];
-    public String[] postIDList = new String[7];
-    String keywordURL = "http://127.0.0.1/getkeyword.php/";
+    public String[] wordList = {"", "",""};
     ListView list;
 
+
+
     JSONObject jobj = null;
-    ClientSeverInterface clientServerInterface = new ClientSeverInterface();
+//    ClientSeverInterface clientServerInterface = new ClientSeverInterface();
     TextView textView;
     String ab;
-
+  //  loadJsp task;
+    phpDown task;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_keyword_view);
-        ArrayAdapter<String> Adapter;
 
-    //    String jsonobejct = connectURL(keywordURL);
-      //  onPostExcute(jsonobejct);
-        new RetreiveData().execute();
-        Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, wordList);
+        final ArrayList<String> midList = new ArrayList<String>();
+        ListView list = (ListView) findViewById(R.id.listView);
 
-        list = (ListView)findViewById(R.id.listView);
-        list.setAdapter(Adapter);
-        list.setOnItemClickListener(this);
+        task = new phpDown(midList);
+        task.execute("http://192.168.0.3:8090/ConnectServer/getKeywordDB.jsp");
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, midList);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent()
+
+                Toast.makeText(getApplication(), midList.get(position), Toast.LENGTH_LONG).show();
+            }
+        });
+
+
     }
 
     @Override
@@ -76,83 +86,74 @@ public class KeywordView extends Activity implements AdapterView.OnItemClickList
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String c_list = wordList[position];
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("item", c_list);
-        startActivity(intent);
-    }
 
-    protected String connectURL(String address)
-    {
-        StringBuilder jsonHtml = new StringBuilder();
-        try{
-            // 연결 url 설정
-            URL url = new URL(address);
-            // 커넥션 객체 생성
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-            // 연결되었으면.
-            if(conn != null){
-                conn.setConnectTimeout(10000);
-                conn.setUseCaches(false);
-                // 연결되었음 코드가 리턴되면.
-                if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
-                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-                    for(;;){
-                        // 웹상에 보여지는 텍스트를 라인단위로 읽어 저장.
-                        String line = br.readLine();
-                        if(line == null) break;
-                        // 저장된 텍스트 라인을 jsonHtml에 붙여넣음
-                        jsonHtml.append(line + "\n");
-                    }
-                    br.close();
-                }
-                conn.disconnect();
-            }
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-        return jsonHtml.toString();
-    }
+    private class phpDown extends AsyncTask<String, Integer,String>{
 
-    protected void onPostExcute(String str)
-    {
-        try {
-            JSONObject root = new JSONObject(str);
-            JSONArray ja = root.getJSONArray("results");
-            for(int i=0; i<ja.length(); i++){
-                JSONObject jo = ja.getJSONObject(i);
-                wordList[i] = jo.getString("word");
-                postIDList[i] = jo.getString("idkeyword");
-                }
-            }
-        catch(JSONException e)
+        final ArrayList<String> midList;
+
+        public phpDown(final ArrayList<String> mid)
         {
-            e.printStackTrace();
+            midList = mid;
         }
-    }
-    class RetreiveData extends AsyncTask<String,String,String> {
 
-        @Override
-        protected String doInBackground(String... arg0) {
-            // TODO Auto-generated method stub
-            jobj = clientServerInterface.makeHttpRequest(keywordURL);
 
-            try {
-                ab = jobj.getString("key");
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
+        protected String doInBackground(String... urls) {
+            StringBuilder jsonHtml = new StringBuilder();
+            try{
+                // 연결 url 설정
+                URL url = new URL(urls[0]);
+                // 커넥션 객체 생성
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                // 연결되었으면.
+                if(conn != null){
+                    conn.setConnectTimeout(10000);
+                    conn.setUseCaches(false);
+                    conn.setRequestProperty("Accept", "application/json");
+                    // 연결되었음 코드가 리턴되면.
+                    if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
+                        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                        for(;;){
+                            // 웹상에 보여지는 텍스트를 라인단위로 읽어 저장.
+                            String line = br.readLine();
+                            if(line == null) break;
+                            // 저장된 텍스트 라인을 jsonHtml에 붙여넣음
+                            jsonHtml.append(line + "\n");
+                        }
+
+                        br.close();
+                    }
+                    conn.disconnect();
+                }
+
+            } catch(Exception ex){
+                ex.printStackTrace();
+            }
+
+            String str = jsonHtml.substring(jsonHtml.lastIndexOf("<body>")+6, jsonHtml.indexOf("</body>"));
+            Log.d("jsonHtml", str);
+            return str;
+        }
+        protected void onPostExecute(String str){
+            String key;
+            String num;
+            try{
+                JSONObject root = new JSONObject(str);
+                JSONArray ja = root.getJSONArray("results");
+
+                for(int i=0; i<ja.length(); i++){
+                    JSONObject jo = ja.getJSONObject(i);
+                    num = Integer.toString(i + 1);
+                    key = jo.getString(num);
+                    Log.d("tag", key);
+                    midList.add(key);
+                //    wordList[i] = key;
+            //        textView.setText(key);
+                }
+            }catch(JSONException e){
                 e.printStackTrace();
             }
-            return ab;
         }
-    protected void onPostExecute(String ab){
 
-        textView.setText(ab);
     }
-
-}
-
 
 }

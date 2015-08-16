@@ -12,4 +12,5 @@
     <string name="tab1">이미지</string>
     <string name="tab2">연관단어</string>
     <string name="tab3">사용자추천</string>
+    <string name="title_activity_list_item">ListItemActivity</string>
 </resources>
