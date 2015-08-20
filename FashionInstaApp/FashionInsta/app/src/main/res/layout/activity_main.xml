@@ -6,21 +6,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
-        android:id="@+id/itemtextView"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:textStyle="bold"
         android:textSize="20dp"
         android:textColor="#f0000000"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:padding="5dp"/>
+        android:layout_marginLeft="54dp"
+        android:layout_marginStart="54dp"
+        android:padding = "5dp"/>
 
     <GridView
-        android:layout_below="@+id/itemtextView"
-        android:id="@+id/gridView1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/gridView"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:columnCount="3">
+        android:numColumns="3"
+        android:layout_below="@+id/textView2" />
 
-    </GridView>
 </RelativeLayout>

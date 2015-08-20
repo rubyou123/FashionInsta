@@ -2,8 +2,6 @@ package fieldeducation.fashioninsta;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,89 +10,56 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.ParseException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+public class KeywordView extends Activity {
 
-public class KeywordView extends Activity{
+    JSONObject jobj = null;
 
-    public String[] arrList = {"놈코어룩", "시스루룩","어슬레저룩","마르살라","플라워 패턴","파스텔 톤"};
-  //  public String[] arrList = new String[3];
-    Bitmap bmImg;
-//    String imgUrl = "http://192.168.123.126/getkeyword.php";
-//    phpDown task;
-    TextView txtView;
-    JSONArray jArray = null;
-    String result = null;
-    StringBuilder sb = null;
-    InputStream is = null;
-    Button btn = null;
+    TextView textView;
+    String ab;
+    phpDown task;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_keyword_view);
-        txtView = (TextView)findViewById(R.id.textView);
+
         final ArrayList<String> midList = new ArrayList<String>();
-        midList.add("마르살라");
-        final ArrayAdapter<String> Adapter;
-        Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, midList);
-        ListView list = (ListView)findViewById(R.id.listView);
-        list.setAdapter(Adapter);
+        final ArrayList<String> idList = new ArrayList<String>();
 
-        btn = (Button)findViewById(R.id.button);
-        /*list.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                midList.add("놈코어룩");
-                midList.add("어슬레져룩");
-                midList.add("시스루룩");
-                Adapter.notifyDataSetChanged();
-            }
+        ListView list = (ListView) findViewById(R.id.listView);
 
-        });*/
-        //list 아이템 누를시 리스트 아이템 추가, -> 수정시 DB 연동해서 데이터를 가져오면 add 하는 것으로 수정
+        task = new phpDown(midList, idList);
+        task.execute("http://192.168.123.126//getkeyword.php");
 
-        btn.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                midList.add("놈코어룩");
-                midList.add("어슬레져룩");
-                midList.add("시스루룩");
-                Adapter.notifyDataSetChanged();
-            }
-        });
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, midList);
+        list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent main = new Intent(KeywordView.this, MainActivity.class);
-                main.putExtra("item", midList.get(position));
-                startActivity(main);
+
+                Intent intent = new Intent(KeywordView.this, MainActivity.class);
+                intent.putExtra("id", idList.get(position));
+                intent.putExtra("key", midList.get(position));
+
+                startActivity(intent);
+                //   Toast.makeText(getApplication(), midList.get(position), Toast.LENGTH_LONG).show();
             }
         });
+
+
     }
 
     @Override
@@ -117,6 +82,80 @@ public class KeywordView extends Activity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private class phpDown extends AsyncTask<String, Integer,String>{
+
+        final ArrayList<String> midList;
+        final ArrayList<String> idList;
+
+        public phpDown(final ArrayList<String> mid, final ArrayList<String> idList)
+        {
+            midList = mid;
+            this.idList = idList;
+        }
+
+
+        protected String doInBackground(String... urls) {
+            StringBuilder jsonHtml = new StringBuilder();
+            try{
+                // 연결 url 설정
+                URL url = new URL(urls[0]);
+                // 커넥션 객체 생성
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                // 연결되었으면.
+                if(conn != null){
+                    conn.setConnectTimeout(10000);
+                    conn.setUseCaches(false);
+                    conn.setRequestProperty("Accept", "application/json");
+                    // 연결되었음 코드가 리턴되면.
+                    if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
+                        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                        for(;;){
+                            // 웹상에 보여지는 텍스트를 라인단위로 읽어 저장.
+                            String line = br.readLine();
+                            if(line == null) break;
+                            // 저장된 텍스트 라인을 jsonHtml에 붙여넣음
+                            jsonHtml.append(line + "\n");
+                        }
+
+                        br.close();
+                    }
+                    conn.disconnect();
+                }
+
+            } catch(Exception ex){
+                ex.printStackTrace();
+            }
+            String str = jsonHtml.toString();
+        //    String str = jsonHtml.substring(jsonHtml.lastIndexOf("<body>")+6, jsonHtml.indexOf("</body>"));
+            Log.d("jsonHtml", str);
+            return str;
+        }
+        protected void onPostExecute(String str){
+            String key;
+            String num;
+            try{
+                JSONObject root = new JSONObject(str);
+                JSONArray ja = root.getJSONArray("result");
+
+                for(int i=0; i<ja.length(); i++){
+                    JSONObject jo = ja.getJSONObject(i);
+                    num = jo.getString("idkeyword");
+                    //num = Integer.toString(i + 1);
+                    idList.add(num);
+                    key = jo.getString("word");
+                    midList.add(key);
+                    Log.d("key", key);
+                    //    wordList[i] = key;
+                    //        textView.setText(key);
+                }
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }

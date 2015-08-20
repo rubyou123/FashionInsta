@@ -80,7 +80,7 @@ public class ParsingCategoryOfNaverShoping {
 					//System.out.println(splitCategory[i].substring(3));
 					hashTagOfBoard.setCategoryList(splitCategory[i].substring(3), 10);
 				}
-					
+				
 			}
 		} catch (IOException e) {
 			System.out.println(e.toString());

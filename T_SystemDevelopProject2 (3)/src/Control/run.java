@@ -36,18 +36,20 @@ public class run {
 		 parsingCategory = new ParsingCategoryOfNaverShoping();
 		  url = "";
 		  totalFre = 0;
+		  int idkeyword = 5;
+		  String keyword = "프린지룩";
 		
 		ExternalDB edb = new ExternalDB();
-		wordList = edb.getWordList(1); // 전체 단어에 대한 빈도수를 가진 총단어  1. 놈코어 2. 시스루룩  3.어슬레져룩
+		wordList = edb.getWordList(idkeyword); // 전체 단어에 대한 빈도수를 가진 총단어  1. 놈코어 2. 시스루룩  3.어슬레져룩  9.올화이트룩
 		
 		setCategoryList(); //카테고리정보가져옴
-		setKeywordList("놈코어룩"); //패션 키워드 정보
+		setKeywordList(keyword); //패션 키워드 정보
 		
 		postIDList = edb.getPostIdList();
 		
 		setFashionPost();
 		
-		edb.InsertFashionPost(fashionPostList, 1);
+		edb.InsertFashionPost(fashionPostList, idkeyword);
 	//	}
 		
 	}
@@ -140,16 +142,18 @@ public class run {
 		//Set<String> key = wordList.keySet();
 		Set<Entry<String, Integer>> set = wordList.entrySet();
 		Iterator<Entry<String,Integer>> iter = set.iterator();
-		
+		int i=1;
 		while(iter.hasNext()){
 			Map.Entry<String, Integer> e = (Map.Entry<String, Integer>)iter.next();
 			
 			Word b = new Word();
 			url = MakeNaverShoppingUrl.execute(e.getKey());
 			b = parsingCategory.connection(url, e.getKey());
-			
+			if(i%20 == 0)
+				System.out.println(i +"번재 진행 중");
 			if(b != null)
 				boardList.add(b);
+			i++;
 		}
 		
 		System.out.println("setCategoryList() : Complete!");
