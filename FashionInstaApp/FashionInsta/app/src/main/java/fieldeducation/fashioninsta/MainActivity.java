@@ -1,7 +1,6 @@
 package fieldeducation.fashioninsta;
 
 import android.app.TabActivity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +19,7 @@ public class MainActivity extends TabActivity {
 
         TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
 
-        TabHost.TabSpec tab1 = tabHost.newTabSpec("Tab1").setIndicator("이미지");
+   /*     TabHost.TabSpec tab1 = tabHost.newTabSpec("Tab1").setIndicator("이미지");
         tab1.setContent(new Intent(this, ImageActivity.class));
         TabHost.TabSpec tab2 = tabHost.newTabSpec("Tab2").setIndicator("연관 단어");
         tab2.setContent(new Intent(this, AssociateTerm.class));
@@ -29,7 +28,7 @@ public class MainActivity extends TabActivity {
         tabHost.addTab(tab1);
         tabHost.addTab(tab2);
         tabHost.addTab(tab3);
-        tabHost.setCurrentTab(0);
+        tabHost.setCurrentTab(0);*/
       /*  tabHost.setup();
         TabHost.TabSpec tab2 = tabHost.newTabSpec("Tab2");
         TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab3");
