@@ -17,7 +17,7 @@
 	mysql_query("set session character_set_results=utf8;");
 	mysql_query("set session character_set_client=utf8;");
 
-	$query = "SELECT idkeyword,word FROM keyword;" ; 
+	$query = "select idkeyword, word from keyword" ; 
 
 	$result = mysql_query($query) ; 
 	$total_record = mysql_num_rows($result);
